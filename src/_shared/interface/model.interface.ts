@@ -1,4 +1,5 @@
-import { IdentityDocTypeEnum } from "../enum/patient.enum";
+import { CreateDateColumn, UpdateDateColumn, DeleteDateColumn } from 'typeorm';
+import { IdentityDocTypeEnum } from '../enum/patient.enum';
 
 export abstract class ITimestamp {
   createdAt: Date;
@@ -6,7 +7,17 @@ export abstract class ITimestamp {
   deletedAt?: Date;
 }
 
-export interface VitalConstant{
+export abstract class ATimestamp implements ITimestamp {
+  @CreateDateColumn({ type: 'timestamp with time zone' })
+  createdAt: Date;
+
+  @UpdateDateColumn({ type: 'timestamp with time zone' })
+  updatedAt: Date;
+
+  @DeleteDateColumn({ name: 'deleted_at', type: 'timestamp with time zone' })
+  deletedAt?: Date;
+}
+export interface VitalConstant {
   weight: string;
   height: string;
   temperature: string;

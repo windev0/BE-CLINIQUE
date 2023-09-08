@@ -4,11 +4,12 @@ import {
   ITimestamp,
   IPerson,
   UserType,
+  ATimestamp,
 } from 'src/_shared';
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
-export class User extends ITimestamp implements IPerson {
+export class User extends ATimestamp implements IPerson {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
@@ -16,9 +17,9 @@ export class User extends ITimestamp implements IPerson {
   email: string;
 
   @Column({ nullable: false })
-  password : string;
+  password: string;
 
- @Column({nullable : false})
+  @Column({ nullable: false })
   type: UserType;
 
   @Column()
@@ -33,24 +34,24 @@ export class User extends ITimestamp implements IPerson {
   @Column()
   birthPlace: string;
 
-  @Column()
+  @Column({ enum: SexEnum, default: SexEnum.MALE })
   sex: SexEnum;
 
-  @Column({nullable : true, unique : true})
+  @Column({ nullable: true, unique: true })
   phone?: string;
 
-  @Column()
+  @Column({ enum: MaritalStatusEnum, default: MaritalStatusEnum.MARRIED })
   maritalStatus: MaritalStatusEnum;
 
-  @Column({type : 'varchar'})
+  @Column({ type: 'varchar' })
   address: string;
 
-  @Column({type : 'date'})
+  @Column()
   createdAt: Date;
 
-  @Column({type : 'date'})
+  @Column()
   updatedAt: Date;
 
-  @Column({nullable : true, type : 'date'})
+  @Column()
   deletedAt?: Date;
 }

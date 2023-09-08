@@ -19,7 +19,7 @@ import { Patient } from './patient/entities/patient.entity';
       port: 5432,
       database: 'c-clinique',
       username: 'postgres',
-      password: 'winner',
+      password: 'winner@3002',
       entities: [User, Patient],
       synchronize: true,
     }),
