@@ -12,6 +12,15 @@ export class User extends ITimestamp implements IPerson {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
+  @Column({ nullable: false })
+  email: string;
+
+  @Column({ nullable: false })
+  password : string;
+
+ @Column({nullable : false})
+  type: UserType;
+
   @Column()
   firstName: string;
 
@@ -27,27 +36,21 @@ export class User extends ITimestamp implements IPerson {
   @Column()
   sex: SexEnum;
 
-  @Column({ nullable: true })
-  email?: string;
-
   @Column({nullable : true, unique : true})
   phone?: string;
 
   @Column()
   maritalStatus: MaritalStatusEnum;
 
-  @Column()
+  @Column({type : 'varchar'})
   address: string;
 
-  @Column({nullable : false})
-  type: UserType;
-
-  @Column()
+  @Column({type : 'date'})
   createdAt: Date;
 
-  @Column()
+  @Column({type : 'date'})
   updatedAt: Date;
 
-  @Column({nullable : true})
+  @Column({nullable : true, type : 'date'})
   deletedAt?: Date;
 }

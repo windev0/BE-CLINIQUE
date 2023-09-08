@@ -32,9 +32,13 @@ export class CreateUserDto implements IPerson {
   sex: SexEnum;
 
   @IsString()
-  @IsOptional()
   @IsEmail()
-  email?: string;
+  @IsNotEmpty()
+  email: string;
+
+  @IsString()
+  @IsNotEmpty()
+  password: string;
 
   @IsString()
   @IsOptional()

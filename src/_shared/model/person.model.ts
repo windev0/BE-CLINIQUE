@@ -1,4 +1,4 @@
-import { MaritalStatusEnum, SexEnum } from '../enum/patient.enum';
+import { MaritalStatusEnum, SexEnum, UserType } from '../enum/patient.enum';
 
 export interface IPerson {
   firstName: string;
@@ -11,5 +11,3 @@ export interface IPerson {
   maritalStatus: MaritalStatusEnum;
   address: string;
 }
-
-

@@ -6,14 +6,18 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { User } from 'src/user/entities/user.entity';
 @Injectable()
 export class UserService {
-
+  constructor(@InjectRepository(User) private readonly userRepository: Repository<User>) { }
 
   create(createUserDto: CreateUserDto) {
-    return 'This action adds a new user';
+    if (!CreateUserDto) {
+      return "ERROR::CreateUser";
+    }
+    this.userRepository.save(createUserDto);
+    return createUserDto;
   }
 
   findAll() {
-    return `This action returns all user`;
+    return this.userRepository.find();
   }
 
   findOne(id: number) {
@@ -25,6 +29,7 @@ export class UserService {
   }
 
   remove(id: number) {
+    this.userRepository.delete(id)
     return `This action removes a #${id} user`;
   }
 }
