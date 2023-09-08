@@ -91,10 +91,10 @@ export class ConsultationService {
       description: 'dddddddd',
       observation: 'iiiiiiiii',
     };
-    cons.tab = ["hhh"];
-    cons.tab.push("ddd")
-    cons.tab.push("amama")
-    console.log('Array', cons.tab);
+    // cons.tab = ["hhh"];
+    // cons.tab.push("ddd")
+    // cons.tab.push("amama")
+    // console.log('Array', cons.tab);
     console.log(cons);
   }
 }

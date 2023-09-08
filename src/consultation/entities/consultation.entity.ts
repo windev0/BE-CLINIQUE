@@ -30,6 +30,6 @@ export class Consultation extends ATimestamp implements IConsultation {
   @Column()
   deletedAt?: Date;
 
-  @Column({ type: 'simple-array' })
-  tab: Array<String>;
+  // @Column({ type: 'simple-array' })
+  // tab: Array<String>;
 }
