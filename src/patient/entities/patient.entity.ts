@@ -7,11 +7,12 @@ import {
   SexEnum,
   Identity,
   VitalConstant,
+  ATimestamp,
 } from 'src/_shared';
-import { BeforeInsert, Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
-export class Patient extends ITimestamp implements IPerson {
+export class Patient extends ATimestamp implements IPerson {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
@@ -27,7 +28,7 @@ export class Patient extends ITimestamp implements IPerson {
   @Column()
   birthPlace: string;
 
-  @Column({ nullable: false })
+  @Column({ nullable: false, default: SexEnum.MALE, enum: SexEnum })
   sex: SexEnum;
 
   @Column({ nullable: true })
@@ -36,7 +37,11 @@ export class Patient extends ITimestamp implements IPerson {
   @Column({ nullable: true, unique: true })
   phone?: string;
 
-  @Column({ nullable: false })
+  @Column({
+    nullable: false,
+    default: MaritalStatusEnum.SINGLE,
+    enum: MaritalStatusEnum,
+  })
   maritalStatus: MaritalStatusEnum;
 
   @Column()
@@ -52,17 +57,17 @@ export class Patient extends ITimestamp implements IPerson {
   constant: VitalConstant;
 
   @Column({ nullable: true })
-  job: string;
+  job?: string;
 
   @Column({ nullable: false })
   emergencyContact: string;
-
-  @Column({ nullable: false })
+  
+  @Column()
   createdAt: Date;
 
-  @Column({ nullable: false })
+  @Column()
   updatedAt: Date;
 
-  @Column({ nullable: true })
+  @Column()
   deletedAt?: Date;
 }

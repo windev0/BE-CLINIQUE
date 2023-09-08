@@ -1,28 +1,77 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { CreatePatientDto } from './dto/create-patient.dto';
 import { UpdatePatientDto } from './dto/update-patient.dto';
-
+import { InjectRepository } from '@nestjs/typeorm';
+import { Patient } from './entities/patient.entity';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class PatientService {
+  private readonly logger = new Logger();
 
-  create(createPatientDto: CreatePatientDto) {
-    return 'This action adds a new patient';
+  constructor(
+    @InjectRepository(Patient)
+    private readonly patientRepository: Repository<Patient>,
+  ) {}
+
+  async create(createPatientDto: CreatePatientDto) {
+    try {
+      if (createPatientDto) {
+        return await this.patientRepository.save(createPatientDto);
+      }
+    } catch (error) {
+      this.logger.error(error.message, 'ERROR::PatientService.createPatient');
+      throw error;
+    }
   }
 
-  findAll() {
-    return `This action returns all patient`;
+  async findAll(): Promise<Patient[]> {
+    try {
+      return await this.patientRepository.find();
+    } catch (error) {}
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} patient`;
+  async findOne(id: string): Promise<Patient> {
+    try {
+      const patient = await this.patientRepository.findOneBy({ id });
+      if (patient) {
+        return patient;
+      }
+      throw new NotFoundException('Patient not found');
+    } catch (error) {
+      this.logger.error(error.message, 'ERROR::PatientService.findOne');
+      throw error;
+    }
   }
 
-  update(id: number, updatePatientDto: UpdatePatientDto) {
-    return `This action updates a #${id} patient`;
+  async update(
+    id: string,
+    updatePatientDto: UpdatePatientDto,
+  ): Promise<Patient> {
+    try {
+      const patient = await this.findOne(id);
+      if (patient) {
+        await this.patientRepository.update(id, updatePatientDto);
+        return patient;
+      }
+      throw new NotFoundException('Patient not found');
+    } catch (error) {
+      this.logger.error(error.message, 'ERROR::PatientService.Update');
+      throw error;
+    }
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} patient`;
+  async remove(id: string): Promise<Patient[]> {
+    try {
+      const user = await this.findOne(id);
+      if (user) {
+        await this.patientRepository.delete(id);
+        return this.findAll();
+      }
+      throw new NotFoundException('Patient not found');
+    } catch (error) {
+      this.logger.error(error.message, 'ERROR::PatientService.Update');
+      throw error;
+    }
   }
 }

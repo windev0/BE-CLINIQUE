@@ -1,5 +1,6 @@
 import { CreateDateColumn, UpdateDateColumn, DeleteDateColumn } from 'typeorm';
 import { IdentityDocTypeEnum } from '../enum/patient.enum';
+import { IsNotEmpty, IsOptional, IsString, isNotEmpty } from 'class-validator';
 
 export abstract class ITimestamp {
   createdAt: Date;
@@ -17,11 +18,20 @@ export abstract class ATimestamp implements ITimestamp {
   @DeleteDateColumn({ name: 'deleted_at', type: 'timestamp with time zone' })
   deletedAt?: Date;
 }
-export interface VitalConstant {
+export abstract class VitalConstant {
+  @IsNotEmpty()
   weight: string;
+
+  @IsNotEmpty()
   height: string;
+
+  @IsNotEmpty()
   temperature: string;
+
+  @IsOptional()
   heartRate?: string;
+
+  @IsOptional()
   bloodPression?: string;
 }
 
