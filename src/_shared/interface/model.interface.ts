@@ -15,7 +15,11 @@ export abstract class ATimestamp implements ITimestamp {
   @UpdateDateColumn({ type: 'timestamp with time zone' })
   updatedAt: Date;
 
-  @DeleteDateColumn({ name: 'deleted_at', type: 'timestamp with time zone' })
+  @DeleteDateColumn({
+    name: 'deleted_at',
+    type: 'timestamp with time zone',
+    nullable: true,
+  })
   deletedAt?: Date;
 }
 export abstract class VitalConstant {

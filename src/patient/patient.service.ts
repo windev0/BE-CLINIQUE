@@ -70,7 +70,7 @@ export class PatientService {
       }
       throw new NotFoundException('Patient not found');
     } catch (error) {
-      this.logger.error(error.message, 'ERROR::PatientService.Update');
+      this.logger.error(error.message, 'ERROR::PatientService.delete');
       throw error;
     }
   }

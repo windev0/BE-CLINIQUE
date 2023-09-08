@@ -7,6 +7,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserModule } from './user/user.module';
 import { User } from './user/entities/user.entity';
 import { Patient } from './patient/entities/patient.entity';
+import { Consultation } from './consultation/entities/consultation.entity';
 
 @Module({
   imports: [
@@ -20,7 +21,7 @@ import { Patient } from './patient/entities/patient.entity';
       database: 'c-clinique',
       username: 'postgres',
       password: 'winner@3002',
-      entities: [User, Patient],
+      entities: [User, Patient, Consultation],
       synchronize: true,
     }),
   ],
