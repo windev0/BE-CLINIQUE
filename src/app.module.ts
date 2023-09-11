@@ -8,12 +8,15 @@ import { UserModule } from './user/user.module';
 import { User } from './user/entities/user.entity';
 import { Patient } from './patient/entities/patient.entity';
 import { Consultation } from './consultation/entities/consultation.entity';
+import { AuthController } from './_shared/auth/auth.controller';
+import { AuthModule } from './_shared/auth/auth.module';
 
 @Module({
   imports: [
     ConsultationModule,
     PatientModule,
     UserModule,
+    AuthModule,
     TypeOrmModule.forRoot({
       type: 'postgres',
       host: 'localhost',
@@ -26,6 +29,8 @@ import { Consultation } from './consultation/entities/consultation.entity';
     }),
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [
+    AppService
+  ],
 })
 export class AppModule {}

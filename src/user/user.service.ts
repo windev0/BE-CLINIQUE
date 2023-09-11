@@ -4,13 +4,14 @@ import {
   Injectable,
   Logger,
   NotFoundException,
+  UnauthorizedException,
 } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { Repository } from 'typeorm';
+import { In, Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from 'src/user/entities/user.entity';
-import updateFactory from './dto/updateFactory';
+import { UserType } from 'src/_shared';
 @Injectable()
 export class UserService {
   private readonly logger = new Logger();
@@ -20,7 +21,13 @@ export class UserService {
 
   async create(createUserDto: CreateUserDto) {
     try {
+      const user = await this.findOneBy(createUserDto);
       if (createUserDto) {
+        if (user) {
+          throw new UnauthorizedException(
+            `User with ${createUserDto.email} already exists`,
+          );
+        }
         return await this.userRepository.save(createUserDto);
       }
     } catch (error) {
@@ -42,6 +49,15 @@ export class UserService {
         return user;
       }
       throw new NotFoundException('User not found');
+    } catch (error) {
+      this.logger.error(error.message, 'ERROR::UserService.findOne');
+      throw error;
+    }
+  }
+  async findOneBy(param: Partial<User>, roles?: UserType[]): Promise<User> {
+    try {
+      const { email } = param;
+      return await this.userRepository.findOneBy({ email });
     } catch (error) {
       this.logger.error(error.message, 'ERROR::UserService.findOne');
       throw error;

@@ -1,3 +1,4 @@
+import { Exclude } from 'class-transformer';
 import {
   SexEnum,
   MaritalStatusEnum,
@@ -13,13 +14,14 @@ export class User extends ATimestamp implements IPerson {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column({ nullable: false })
+  @Column()
   email: string;
 
-  @Column({ nullable: false })
+  @Column()
+  @Exclude()
   password: string;
 
-  @Column({ nullable: false })
+  @Column()
   type: UserType;
 
   @Column()
