@@ -10,7 +10,7 @@ export enum SexEnum {
   UNKNOWN = 'AUTRE',
 }
 export enum UserType {
-  DOCTOR = 'DOCTEUR',
+  DOCTOR = 'MEDECIN',
   NURSE = 'INFIRMIER',
 }
 

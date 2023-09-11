@@ -8,7 +8,6 @@ import { UserModule } from './user/user.module';
 import { User } from './user/entities/user.entity';
 import { Patient } from './patient/entities/patient.entity';
 import { Consultation } from './consultation/entities/consultation.entity';
-import { AuthController } from './_shared/auth/auth.controller';
 import { AuthModule } from './_shared/auth/auth.module';
 
 @Module({
@@ -29,8 +28,6 @@ import { AuthModule } from './_shared/auth/auth.module';
     }),
   ],
   controllers: [AppController],
-  providers: [
-    AppService
-  ],
+  providers: [AppService],
 })
 export class AppModule {}

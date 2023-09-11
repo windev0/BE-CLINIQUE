@@ -71,7 +71,7 @@ export class AuthService {
   }
 
   async findOne(request: Request): Promise<{}> {
-    try {
+    try {      
       const cookie = request.cookies['jwt'];
 
       const data = await this.jwtService.verifyAsync(cookie);
