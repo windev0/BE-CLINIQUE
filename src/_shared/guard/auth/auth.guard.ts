@@ -16,6 +16,7 @@ export class AuthGuard implements CanActivate {
     private reflector: Reflector,
     private userService: UserService,
     private jwtService: JwtService,
+    // 
   ) {}
   canActivate(
     context: ExecutionContext,
