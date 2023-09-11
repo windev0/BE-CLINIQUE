@@ -63,8 +63,8 @@ export class PatientService {
 
   async remove(id: string): Promise<Patient[]> {
     try {
-      const user = await this.findOne(id);
-      if (user) {
+      const patient = await this.findOne(id);
+      if (patient) {
         await this.patientRepository.delete(id);
         return this.findAll();
       }

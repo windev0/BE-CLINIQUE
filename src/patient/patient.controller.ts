@@ -16,7 +16,6 @@ export class PatientController {
   constructor(private readonly patientService: PatientService) {}
 
   @Post()
-
   create(@Body() createPatientDto: CreatePatientDto) {
     return this.patientService.create(createPatientDto);
   }
