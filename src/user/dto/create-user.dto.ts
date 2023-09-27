@@ -19,14 +19,14 @@ export class CreateUserDto implements IPerson {
   lastName: string;
 
   @IsDate()
-  @IsNotEmpty()
+  // @IsNotEmpty()
   birthDate: Date;
 
   @IsString()
-  @IsNotEmpty()
+  // @IsNotEmpty()
   birthPlace: string;
 
-  @IsNotEmpty()
+  // @IsNotEmpty()
   @IsString()
   @IsEnum(SexEnum)
   sex: SexEnum;
@@ -45,7 +45,7 @@ export class CreateUserDto implements IPerson {
   @IsPhoneNumber()
   phone?: string;
 
-  @IsNotEmpty()
+  // @IsNotEmpty()
   @IsString()
   @IsEnum(MaritalStatusEnum)
   maritalStatus: MaritalStatusEnum;

@@ -2,12 +2,10 @@ import {
   CanActivate,
   ExecutionContext,
   Injectable,
-  UnauthorizedException,
 } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { JwtService } from '@nestjs/jwt';
 import { Observable } from 'rxjs';
-import { AuthService } from 'src/_shared/auth/auth.service';
 import { UserService } from 'src/user/user.service';
 
 @Injectable()
@@ -24,7 +22,8 @@ export class AuthGuard implements CanActivate {
     const roles = this.reflector.get<string[]>('roles', context.getHandler());
     const request = context.switchToHttp().getRequest();
 
-    const cookie = request.cookies['jwt'];
+    // get jwt cookie from the request
+    const cookie = request.cookies['jwt']; 
 
     const state = this.jwtService.verifyAsync(cookie).then(async (data) => {
       const user = await this.userService.findOne(data.id);

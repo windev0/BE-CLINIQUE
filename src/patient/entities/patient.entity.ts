@@ -47,7 +47,7 @@ export class Patient extends ATimestamp implements IPerson {
   @Column()
   address: string;
 
-  @Column()
+  @Column({ nullable: true })
   nationality: string;
 
   @Column({ nullable: true, type: 'simple-json' })
@@ -61,7 +61,7 @@ export class Patient extends ATimestamp implements IPerson {
 
   @Column({ nullable: false })
   emergencyContact: string;
-  
+
   @Column()
   createdAt: Date;
 

@@ -30,10 +30,10 @@ export class User extends ATimestamp implements IPerson {
   @Column()
   lastName: string;
 
-  @Column()
+  @Column({nullable : true})
   birthDate: Date;
 
-  @Column()
+  @Column({nullable : true})
   birthPlace: string;
 
   @Column({ enum: SexEnum, default: SexEnum.MALE })
