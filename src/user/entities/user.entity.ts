@@ -8,6 +8,7 @@ import {
   ATimestamp,
 } from 'src/_shared';
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import * as bcrypt from 'bcrypt';
 
 @Entity()
 export class User extends ATimestamp implements IPerson {
@@ -17,9 +18,9 @@ export class User extends ATimestamp implements IPerson {
   @Column()
   email: string;
 
-  @Column()
   @Exclude()
-  password: string;
+  @Column()
+  password?: string;
 
   @Column()
   type: UserType;
@@ -39,7 +40,7 @@ export class User extends ATimestamp implements IPerson {
   @Column({ enum: SexEnum, default: SexEnum.MALE })
   sex: SexEnum;
 
-  @Column({ nullable: true, unique: true })
+  @Column({ nullable: true })
   phone?: string;
 
   @Column({ enum: MaritalStatusEnum, default: MaritalStatusEnum.MARRIED })
@@ -56,4 +57,8 @@ export class User extends ATimestamp implements IPerson {
 
   @Column()
   deletedAt?: Date;
+
+  async validatePassword?(password: string): Promise<boolean> {
+    return await bcrypt.compare(password, this.password);
+  }
 }

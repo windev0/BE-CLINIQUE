@@ -6,21 +6,23 @@ import {
   Patch,
   Param,
   Delete,
-  Req,
-  UnauthorizedException,
+  ParseArrayPipe,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { Request } from 'express';
 @Controller('user')
 export class UserController {
-  jwtService: any;
   constructor(private readonly userService: UserService) {}
 
   @Post()
   create(@Body() createUserDto: CreateUserDto) {
     return this.userService.create(createUserDto);
+  }
+
+  @Post('bulk')
+  createBulk(@Body(new ParseArrayPipe({items : CreateUserDto})) datas: CreateUserDto) {
+    return this.userService.create(datas);
   }
 
   @Get()

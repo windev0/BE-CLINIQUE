@@ -1,5 +1,6 @@
 import {
   IsDate,
+  IsDateString,
   IsEmail,
   IsEnum,
   IsNotEmpty,
@@ -18,22 +19,18 @@ export class CreateUserDto implements IPerson {
   @IsNotEmpty()
   lastName: string;
 
-  @IsDate()
-  // @IsNotEmpty()
+  @IsDateString()
   birthDate: Date;
 
   @IsString()
-  // @IsNotEmpty()
   birthPlace: string;
 
-  // @IsNotEmpty()
   @IsString()
   @IsEnum(SexEnum)
   sex: SexEnum;
 
   @IsString()
   @IsEmail()
-  @IsNotEmpty()
   email: string;
 
   @IsString()
@@ -41,9 +38,9 @@ export class CreateUserDto implements IPerson {
   password: string;
 
   @IsString()
-  @IsOptional()
+  // @IsOptional()
   @IsPhoneNumber()
-  phone?: string;
+  phone: string;
 
   // @IsNotEmpty()
   @IsString()
@@ -56,6 +53,5 @@ export class CreateUserDto implements IPerson {
 
   @IsString()
   @IsEnum(UserType)
-  @IsNotEmpty()
   type: UserType;
 }

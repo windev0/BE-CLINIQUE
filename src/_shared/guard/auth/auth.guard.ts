@@ -18,13 +18,13 @@ export class AuthGuard implements CanActivate {
   ) {}
   canActivate(
     context: ExecutionContext,
-  ): boolean | Promise<boolean> | Observable<boolean> {
+  ): boolean | Promise<boolean> | Observable<boolean> { 
     const roles = this.reflector.get<string[]>('roles', context.getHandler());
     const request = context.switchToHttp().getRequest();
 
     // get jwt cookie from the request
     const cookie = request.cookies['jwt']; 
-
+    console.log('SOME ======= ', cookie, this.jwtService)
     const state = this.jwtService.verifyAsync(cookie).then(async (data) => {
       const user = await this.userService.findOne(data.id);
 

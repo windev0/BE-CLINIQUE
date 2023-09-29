@@ -12,10 +12,10 @@ import { PatientService } from './patient.service';
 import { CreatePatientDto } from './dto/create-patient.dto';
 import { UpdatePatientDto } from './dto/update-patient.dto';
 import { Roles } from 'src/_shared/custom-decorator/role/role.decorator';
-import { AuthGuard } from 'src/_shared/guard/auth/auth.guard';
+// import { AuthGuard } from 'src/_shared/guard/auth/auth.guard';
 
 @Controller('patient')
-@UseGuards(AuthGuard)
+// @UseGuards(AuthGuard)
 export class PatientController {
   constructor(private readonly patientService: PatientService) {}
 

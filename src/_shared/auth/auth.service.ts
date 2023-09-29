@@ -10,6 +10,7 @@ import { UserService } from 'src/user/user.service';
 import * as bcrypt from 'bcrypt';
 import { ILoginDTO } from '../interface/auth.interface';
 import { Response, Request } from 'express';
+import { User } from '../../user/entities/user.entity';
 
 @Injectable()
 export class AuthService {
@@ -20,7 +21,7 @@ export class AuthService {
     private jwtService: JwtService,
   ) {}
 
-  async register(createUserDTO: CreateUserDto): Promise<any> {
+  async register(createUserDTO: CreateUserDto) {
     try {
       const hashedPassword = await bcrypt.hash(createUserDTO.password, 12);
 
@@ -32,7 +33,7 @@ export class AuthService {
       if (user) {
         return {
           message: 'User created sucessfully',
-          user: await this.refactoryUser(user),
+          user: this.refactoryUser(user),
         };
       } else {
         throw new BadRequestException('An error is occured when registering');
@@ -104,7 +105,36 @@ export class AuthService {
     }
   }
 
-  async refactoryUser(user: any): Promise<{}> {
+  async signIn(data: ILoginDTO): Promise<{ accessToken: string }> {
+    const {user} = await this.validateUserPassword(data);
+    if (!user) {
+      throw new BadRequestException('invalid credentials');
+    }
+    const payload = { email: user.email, id: user.id };
+    const accessToken = this.jwtService.sign(payload);
+
+    return { accessToken, ...this.refactoryUser(user) };
+
+  }
+
+  async validateUserPassword(data: ILoginDTO) {
+    const { email, password } = data;
+    const user = await this.userService.findOneBy({ email });
+    if (user && await user.validatePassword(password)) {
+      return {
+        message: 'User logged in succesfully',
+        user: this.refactoryUser(user),
+      };
+    } else {
+        throw new UnauthorizedException();
+    }
+  }
+
+  private async hashPassword(password: string, salt: string): Promise<string> {
+      return bcrypt.hash(password, salt);
+  }
+
+  private refactoryUser(user: any) {
     return {
       id: user.id,
       email: user.email,
@@ -119,7 +149,7 @@ export class AuthService {
       maritalStatus: user.maritalStatus,
       createdAt: user.createdAt,
       updatedAtt: user.updatedAt,
-      deletedAt: user.deletedAt,
+      // deletedAt: user.deletedAt,
     };
   }
 }

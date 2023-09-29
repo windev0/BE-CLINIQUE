@@ -9,7 +9,8 @@ import {
   VitalConstant,
   ATimestamp,
 } from 'src/_shared';
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { Consultation } from '../../consultation/entities/consultation.entity';
 
 @Entity()
 export class Patient extends ATimestamp implements IPerson {
@@ -70,4 +71,10 @@ export class Patient extends ATimestamp implements IPerson {
 
   @Column()
   deletedAt?: Date;
+
+  @OneToMany(() => Consultation, (consultation) => consultation.patient, { onUpdate: 'CASCADE' })
+  consultations: Consultation[]
+
+  // @OneToMany(() => Prescription, (prescription) => prescription.patient, { onUpdate: 'CASCADE' })
+  // prescriptions: Prescription[]
 }

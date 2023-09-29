@@ -21,14 +21,15 @@ export class UserService {
 
   async create(createUserDto: CreateUserDto) {
     try {
-      const user = await this.findOneBy(createUserDto);
       if (createUserDto) {
+        const user = await this.findOneBy(createUserDto);
         if (user) {
           throw new UnauthorizedException(
             `User with ${createUserDto.email} already exists`,
           );
         }
-        return await this.userRepository.save(createUserDto);
+        const newUser = await this.userRepository.save(createUserDto);
+        return this.refactoryUser(newUser);
       }
     } catch (error) {
       this.logger.error(error.message, 'ERROR::UserService.createUser');
@@ -36,9 +37,19 @@ export class UserService {
     }
   }
 
+  async createBulk(datas: CreateUserDto[]) {
+    if (datas?.length > 0) {
+      Promise.all(datas.map((data) => this.create(data)));
+    }
+  }
+
   async findAll(): Promise<User[]> {
     try {
-      return await this.userRepository.find();
+      const list = await this.userRepository.find();
+      if (list?.length > 0) {
+        return list.map((user) => this.refactoryUser(user));
+      }
+      return [];
     } catch (error) {}
   }
 
@@ -46,7 +57,7 @@ export class UserService {
     try {
       const user = await this.userRepository.findOneBy({ id });
       if (user) {
-        return user;
+        return this.refactoryUser(user);
       }
       throw new NotFoundException('User not found');
     } catch (error) {
@@ -59,7 +70,7 @@ export class UserService {
       const { email } = param;
       return await this.userRepository.findOneBy({ email });
     } catch (error) {
-      this.logger.error(error.message, 'ERROR::UserService.findOne');
+      this.logger.error(error.message, 'ERROR::UserService.findOneBy');
       throw error;
     }
   }
@@ -83,12 +94,31 @@ export class UserService {
       const user = await this.findOne(id);
       if (user) {
         await this.userRepository.delete(id);
-        return this.findAll();
+        return await this.findAll();
       }
       throw new NotFoundException('User not found');
     } catch (error) {
       this.logger.error(error.message, 'ERROR::UserService.Update');
       throw error;
     }
+  }
+
+  private refactoryUser(user: User): User {
+    return {
+      id: user.id,
+      email: user.email,
+      firstName: user.firstName,
+      lastName: user.lastName,
+      sex: user.sex,
+      type: user.type,
+      address: user.address,
+      birthDate: user.birthDate,
+      birthPlace: user.birthPlace,
+      phone: user.phone,
+      maritalStatus: user.maritalStatus,
+      createdAt: user.createdAt,
+      updatedAt: user.updatedAt,
+      // deletedAt: user.deletedAt,
+    };
   }
 }

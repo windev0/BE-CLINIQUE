@@ -27,7 +27,7 @@ export class PatientService {
 
   async findAll(): Promise<Patient[]> {
     try {
-      return await this.patientRepository.find();
+      return await this.patientRepository.find({relations: {consultations: true}});
     } catch (error) {}
   }
 

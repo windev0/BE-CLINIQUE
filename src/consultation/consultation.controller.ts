@@ -11,11 +11,11 @@ import {
 import { ConsultationService } from './consultation.service';
 import { CreateConsultationDto } from './dto/create-consultation.dto';
 import { UpdateConsultationDto } from './dto/update-consultation.dto';
-import { AuthGuard } from 'src/_shared/guard/auth/auth.guard';
+// import { AuthGuard } from 'src/_shared/guard/auth/auth.guard';
 import { Roles } from 'src/_shared/custom-decorator/role/role.decorator';
 
 @Controller('consultation')
-@UseGuards(AuthGuard)
+// @UseGuards(AuthGuard)
 export class ConsultationController {
   constructor(private readonly consultationService: ConsultationService) {}
 

@@ -1,5 +1,7 @@
+import { Type } from 'class-transformer';
 import {
   IsDate,
+  IsDateString,
   IsEmail,
   IsEnum,
   IsNotEmpty,
@@ -20,22 +22,17 @@ import {
 
 export class CreatePatientDto implements IPerson {
   @IsString()
-  @IsNotEmpty()
   firstName: string;
 
   @IsString()
-  @IsNotEmpty()
   lastName: string;
 
-  @IsDate()
-  @IsNotEmpty()
+  @IsDateString()
   birthDate: Date;
 
   @IsString()
-  @IsNotEmpty()
   birthPlace: string;
 
-  @IsNotEmpty()
   @IsString()
   @IsEnum(SexEnum)
   sex: SexEnum;
@@ -50,13 +47,11 @@ export class CreatePatientDto implements IPerson {
   @IsPhoneNumber()
   phone?: string;
 
-  @IsNotEmpty()
   @IsString()
   @IsEnum(MaritalStatusEnum)
   maritalStatus: MaritalStatusEnum;
 
   @IsString()
-  @IsNotEmpty()
   address: string;
 
   @IsString()
@@ -67,16 +62,14 @@ export class CreatePatientDto implements IPerson {
   @IsOptional()
   identity?: Identity;
 
-  @IsObject()
-  @IsNotEmptyObject()
+  @ValidateNested()
+  @Type(() => VitalConstant)
   constant: VitalConstant;
 
   @IsString()
-  @IsNotEmpty()
   job: string;
 
   @IsString()
-  @IsNotEmpty()
   @IsPhoneNumber()
   emergencyContact: string;
 }

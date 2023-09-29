@@ -4,8 +4,9 @@ import { UpdateConsultationDto } from './dto/update-consultation.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Consultation } from './entities/consultation.entity';
 import { Repository } from 'typeorm';
-import { IHistory } from 'src/_shared/model/medical.model';
+import { IConsultation, IHistory } from 'src/_shared/model/medical.model';
 import { HistoryTypeEnum } from 'src/_shared';
+import { Patient } from '../patient/entities/patient.entity';
 
 @Injectable()
 export class ConsultationService {
@@ -14,11 +15,16 @@ export class ConsultationService {
   constructor(
     @InjectRepository(Consultation)
     private readonly consultationRepository: Repository<Consultation>,
+    @InjectRepository(Patient)
+    private readonly patientRepository: Repository<Patient>,
   ) {}
 
-  async create(createConsultationDto: CreateConsultationDto) {
+  async create(createConsultationDto: IConsultation) {
     try {
-      if (createConsultationDto) {
+      const { patientId: patientId } = createConsultationDto;
+      const patient = await this.patientRepository.findOneBy({id: patientId})
+      if (patient) {
+        createConsultationDto.patient = patient;
         return await this.consultationRepository.save(createConsultationDto);
       }
     } catch (error) {
@@ -29,7 +35,7 @@ export class ConsultationService {
 
   async findAll(): Promise<Consultation[]> {
     try {
-      return await this.consultationRepository.find();
+      return await this.consultationRepository.find({relations: {patient: true}});
     } catch (error) {
       this.logger.error(error.message, 'ERROR::ConsulationService.findAll');
       throw error;
@@ -38,7 +44,7 @@ export class ConsultationService {
 
   async findOne(id: string): Promise<Consultation> {
     try {
-      const consultation = await this.consultationRepository.findOneBy({ id });
+      const consultation = await this.consultationRepository.findOne({ relations: {patient: true}, where: {id} });
       if (consultation) {
         return consultation;
       }
