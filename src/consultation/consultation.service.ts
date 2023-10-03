@@ -35,7 +35,7 @@ export class ConsultationService {
 
   async findAll(): Promise<Consultation[]> {
     try {
-      return await this.consultationRepository.find({relations: {patient: true}});
+      return await this.consultationRepository.find({relations: {patient: true}, order: {createdAt: 'DESC'}});
     } catch (error) {
       this.logger.error(error.message, 'ERROR::ConsulationService.findAll');
       throw error;

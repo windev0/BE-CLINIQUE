@@ -35,7 +35,7 @@ export class Patient extends ATimestamp implements IPerson {
   @Column({ nullable: true })
   email?: string;
 
-  @Column({ nullable: true, unique: true })
+  @Column({ nullable: true })
   phone?: string;
 
   @Column({

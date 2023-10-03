@@ -27,7 +27,10 @@ export class PatientService {
 
   async findAll(): Promise<Patient[]> {
     try {
-      return await this.patientRepository.find({relations: {consultations: true}});
+      return await this.patientRepository.find({
+        relations: {consultations: true}, 
+        order: {createdAt: 'DESC'}
+      });
     } catch (error) {}
   }
 

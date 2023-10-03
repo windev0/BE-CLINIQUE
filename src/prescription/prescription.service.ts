@@ -39,7 +39,10 @@ export class PrescriptionService {
 
   async findAll(): Promise<Prescription[]> {
     try {
-      return await this.prestationRepository.find({relations: {consultation: {patient: true}}});
+      return await this.prestationRepository.find({
+        relations: {consultation: {patient: true}}, 
+        order: {createdAt: 'DESC'}
+      });
     } catch (error) {
       this.logger.error(error.message, 'ERROR::ConsulationService.findAll');
       throw error;
