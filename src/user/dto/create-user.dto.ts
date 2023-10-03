@@ -20,9 +20,11 @@ export class CreateUserDto implements IPerson {
   lastName: string;
 
   @IsDateString()
+  @IsOptional()
   birthDate: Date;
 
   @IsString()
+  @IsOptional()
   birthPlace: string;
 
   @IsString()
@@ -38,13 +40,13 @@ export class CreateUserDto implements IPerson {
   password: string;
 
   @IsString()
-  // @IsOptional()
   @IsPhoneNumber()
   phone: string;
 
   // @IsNotEmpty()
   @IsString()
   @IsEnum(MaritalStatusEnum)
+  @IsOptional()
   maritalStatus: MaritalStatusEnum;
 
   @IsString()

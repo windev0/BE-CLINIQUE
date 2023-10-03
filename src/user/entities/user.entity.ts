@@ -43,7 +43,7 @@ export class User extends ATimestamp implements IPerson {
   @Column({ nullable: true })
   phone?: string;
 
-  @Column({ enum: MaritalStatusEnum, default: MaritalStatusEnum.MARRIED })
+  @Column({ enum: MaritalStatusEnum, default: MaritalStatusEnum.SINGLE })
   maritalStatus: MaritalStatusEnum;
 
   @Column({ type: 'varchar' })

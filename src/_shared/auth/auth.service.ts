@@ -44,32 +44,32 @@ export class AuthService {
     }
   }
 
-  async login(loginDTO: ILoginDTO, response: Response): Promise<any> {
-    try {
-      const { email, password } = loginDTO;
-      const user = await this.userService.findOneBy({ email });
+  // async login(loginDTO: ILoginDTO, response: Response): Promise<any> {
+  //   try {
+  //     const { email, password } = loginDTO;
+  //     const user = await this.userService.findOneBy({ email });
 
-      if (!user) {
-        throw new BadRequestException('invalid credentials');
-      }
+  //     if (!user) {
+  //       throw new BadRequestException('invalid credentials');
+  //     }
 
-      if (!(await bcrypt.compare(password, user.password))) {
-        throw new BadRequestException('invalid credentials');
-      }
+  //     if (!(await bcrypt.compare(password, user.password))) {
+  //       throw new BadRequestException('invalid credentials');
+  //     }
 
-      const jwt = await this.jwtService.signAsync({ id: user.id });
+  //     const jwt = await this.jwtService.signAsync({ id: user.id });
 
-      response.cookie('jwt', jwt, { httpOnly: true });
+  //     response.cookie('jwt', jwt, { httpOnly: true });
 
-      return {
-        message: 'User logged in succesfully',
-        user: await this.refactoryUser(user),
-      };
-    } catch (error) {
-      this.logger.error(error.message, 'ERROR::AuthService.login');
-      throw error;
-    }
-  }
+  //     return {
+  //       message: 'User logged in succesfully',
+  //       user: await this.refactoryUser(user),
+  //     };
+  //   } catch (error) {
+  //     this.logger.error(error.message, 'ERROR::AuthService.login');
+  //     throw error;
+  //   }
+  // }
 
   async findOne(request: Request): Promise<{}> {
     try {      
@@ -93,11 +93,10 @@ export class AuthService {
   async logout(response: Response, request: Request): Promise<any> {
     try {
       const user = await this.findOne(request);
-      response.clearCookie('jwt');
 
       return {
         message: 'User logged out succesfully',
-        user: await this.refactoryUser(user),
+        user: this.refactoryUser(user),
       };
     } catch (error) {
       this.logger.error(error.message, 'ERROR::AuthService.register');
