@@ -25,7 +25,7 @@ import { Prescription } from './prescription/prestation.entity';
       port: 5432,
       database: 'c-clinique',
       username: 'postgres',
-      password: 'winner@3002',
+      password: 'winner',
       entities: [User, Patient, Consultation, Prescription],
       synchronize: true,
     }),
